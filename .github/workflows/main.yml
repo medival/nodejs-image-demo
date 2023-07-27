@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  SHORT_SHA: ${{ github.sha }}
 # jobs:
 #   build:
 #     runs-on: ubuntu-latest
@@ -44,9 +46,9 @@ jobs:
 
       - uses: actions/checkout@v3
       - name: Build the image
-        run: docker build . --file Dockerfile --tag adipurnomo/${{ vars.APP_NAME }}:${SHORT_SHA}
+        run: docker build . --file Dockerfile --tag adipurnomo/${{ vars.APP_NAME }}:${{ env.SHORT_SHA }}
       - name: Push the image
-        run: docker push adipurnomo/${{ vars.APP_NAME }}:${SHORT_SHA}
+        run: docker push adipurnomo/${{ vars.APP_NAME }}:${{ env.SHORT_SHA }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # - name: Pull Code
@@ -69,4 +71,4 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/project3
-            echo $SHORT_SHA
+            echo ${{ env.SHORT_SHA }}
