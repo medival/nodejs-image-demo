@@ -41,9 +41,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu/project3/node
+            cd /home/ubuntu/project3
             git pull
             docker-compose down
-            docker-compose up
-            docker-compose up -d --force-recreate --no-deps nodejs
+            docker-compose up -d --build
             
