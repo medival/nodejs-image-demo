@@ -69,5 +69,6 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/project3
+            sed -i '8s/latest/${GITHUB_SHA::6}/g'
             docker-compose down
             docker-compose up -d
