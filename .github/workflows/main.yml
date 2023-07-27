@@ -41,8 +41,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu/project3
+            cd /home/ubuntu/project3/node
             git pull
+            cd /home/ubuntu/project3
             docker-compose down
             docker-compose up -d --build
             
