@@ -7,6 +7,7 @@ on:
     branches: [master]
 
 env:
+  DOCKER_USERNAME: adipurnomo
   SHORT_SHA: ${{ github.sha }}
 # jobs:
 #   build:
@@ -41,14 +42,14 @@ jobs:
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: docker.io
-          username: adipurnomo
+          username: ${{ env.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - uses: actions/checkout@v3
       - name: Build the image
-        run: docker build . --file Dockerfile --tag adipurnomo/${{ vars.APP_NAME }}:${{ env.SHORT_SHA }}
+        run: docker build . --file Dockerfile --tag ${{ env.DOCKER_USERNAME }}/${{ vars.APP_NAME }}:${{ env.SHORT_SHA }}
       - name: Push the image
-        run: docker push adipurnomo/${{ vars.APP_NAME }}:${{ env.SHORT_SHA }}
+        run: docker push ${{ env.DOCKER_USERNAME }}/${{ vars.APP_NAME }}:${{ env.SHORT_SHA }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # - name: Pull Code
@@ -71,4 +72,8 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/project3
-            echo ${{ env.SHORT_SHA }}
+            sed -i '8s|.*|    image: ${{ env.DOCKER_USERNAME }}/${{ env.APP_NAME }}: ${{ env.SHORT_SHA }}|' docker-compose.yml
+            docker-compose down
+            docker-compose up -d
+            docker ps -a
+            echo "Success Update an Image"
