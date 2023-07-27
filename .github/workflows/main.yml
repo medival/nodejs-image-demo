@@ -39,14 +39,14 @@ jobs:
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: adipurnomo
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - uses: actions/checkout@v3
       - name: Build the image
-        run: docker build . --file Dockerfile --tag ${{ vars.DOCKER_USERNAME }}/${{ vars.APP_NAME }}:${GITHUB_SHA::6}
+        run: docker build . --file Dockerfile --tag adipurnomo/${{ vars.APP_NAME }}:${GITHUB_SHA::6}
       - name: Push the image
-        run: docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.APP_NAME }}:${GITHUB_SHA::6}
+        run: docker push adipurnomo/${{ vars.APP_NAME }}:${GITHUB_SHA::6}
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # - name: Pull Code
@@ -69,6 +69,6 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/project3
-            sed -i '8s/.*/    image: ${{ env.DOCKER_USERNAME }}/${{ env.APP_NAME }}:${GITHUB_SHA::6}/' docker-compose.yml
+            sed -i '8s/.*/    image: adipurnomo/${{ env.APP_NAME }}:${GITHUB_SHA::6}/' docker-compose.yml
             docker-compose down
             docker-compose up -d
